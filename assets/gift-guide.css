@@ -206,7 +206,7 @@
  * ============================================================ */
 
 .gg-grid-section {
-  padding: 0 50px 90px;
+  padding: 70px 50px 90px;
   max-width: 1440px;
   margin: 0 auto;
 }
@@ -737,7 +737,7 @@
 
   /* ── Grid Section ────────────────────────────────────── */
   .gg-grid-section {
-    padding: 0 16px 40px;
+    padding: 50px 16px 40px;
   }
 
   .gg-grid__title {
