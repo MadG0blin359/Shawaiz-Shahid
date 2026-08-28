@@ -618,25 +618,72 @@
   /* ── Mobile Header ───────────────────────────────────── */
   .gg-mobile-header {
     display: flex;
+    flex-direction: column;
+    background: var(--gg-light-bg);
+    position: relative;
+    z-index: 50;
+  }
+
+  .gg-mobile-header__main {
+    display: flex;
     align-items: center;
     gap: 78px;
-    padding: 23px 16px 23px 16px;
-    background: var(--gg-light-bg);
+    padding: 23px 16px;
+    width: 100%;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
   }
 
   .gg-mobile-header__hamburger {
     width: 18px;
-    height: 10px;
+    height: 18px;
     cursor: pointer;
     background: none;
     border: none;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .gg-mobile-header__logo {
     height: 19px;
     width: auto;
+  }
+
+  .gg-mobile-header__dropdown {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: var(--gg-grey-bg);
+    padding: 24px 16px;
+    gap: 16px;
+  }
+
+  .gg-mobile-header__dropdown.is-active {
+    display: flex;
+  }
+
+  .gg-mobile-header__text {
+    font-family: var(--gg-font-body);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: center;
+    color: var(--gg-black);
+  }
+
+  .gg-mobile-header__btn {
+    width: 100%;
+  }
+
+  /* When menu is open, toggle icons */
+  .gg-mobile-header.is-open .gg-mobile-header__icon-open {
+    display: none;
+  }
+  .gg-mobile-header.is-open .gg-mobile-header__icon-close {
+    display: block !important;
   }
 
   /* ── Hero ─────────────────────────────────────────────── */

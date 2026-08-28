@@ -94,6 +94,18 @@ function bindEvents() {
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closePopup();
   });
+
+  /* Mobile header dropdown toggle */
+  var mobileMenuTrigger = document.getElementById('gg-mobile-menu-trigger');
+  var mobileMenuDropdown = document.getElementById('gg-mobile-menu-dropdown');
+  var mobileHeader = document.getElementById('gg-mobile-header');
+
+  if (mobileMenuTrigger && mobileMenuDropdown && mobileHeader) {
+    mobileMenuTrigger.addEventListener('click', function () {
+      mobileHeader.classList.toggle('is-open');
+      mobileMenuDropdown.classList.toggle('is-active');
+    });
+  }
 }
 
 /* ============================================================
