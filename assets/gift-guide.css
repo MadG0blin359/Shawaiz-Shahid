@@ -651,18 +651,24 @@
   }
 
   .gg-mobile-header__dropdown {
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
     background: var(--gg-grey-bg);
-    padding: 24px 16px;
+    padding: 0 16px;
     gap: 16px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
   }
 
   .gg-mobile-header__dropdown.is-active {
-    display: flex;
+    max-height: 250px;
+    padding: 24px 16px;
+    opacity: 1;
   }
 
   .gg-mobile-header__text {
