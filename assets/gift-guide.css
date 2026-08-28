@@ -583,21 +583,24 @@
 }
 
 /* ============================================================
- * RESPONSIVE — MOBILE (≤ 768px)
+ * RESPONSIVE — MOBILE (≤ 749px)
  * ============================================================ */
-@media (max-width: 768px) {
+@media (max-width: 749px) {
 
   /* ── Bar ──────────────────────────────────────────────── */
   .gg-bar {
     padding: 10px 16px;
     gap: 16px;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .gg-bar__text {
     font-size: 14px;
+    text-align: center;
   }
 
+  .gg-bar__logo,
   .gg-bar .gg-btn-choose {
     display: none;
   }
@@ -659,6 +662,10 @@
     max-width: 340px;
   }
 
+  .gg-btn-shop:not(.gg-hero__cta-mobile) {
+    display: none;
+  }
+
   .gg-hero__cta-mobile {
     margin-top: auto;
     margin-bottom: 64px;
@@ -699,7 +706,7 @@
 }
 
 /* ── Desktop-only helpers ────────────────────────────────── */
-@media (min-width: 769px) {
+@media (min-width: 750px) {
   .gg-mobile-header {
     display: none;
   }
