@@ -334,54 +334,89 @@ function handleAddToCart() {
   atcBtn.disabled = true;
   setStatus('Adding to cart…', '');
 
-  addToCart(variant.id, 1)
-    .then(function () {
-      setStatus('Added to cart!', 'success');
-      closePopup(); // Close the popup so they can see the cart drawer open
+  /*
+   * ── SPECIAL RULE ──────────────────────────────────
+   * If the variant being added has Color = Black AND
+   * Size = M (Medium), also auto-add the "Soft Winter
+   * Jacket" (handle: dark-winter-jacket) to the cart.
+   * ──────────────────────────────────────────────────
+   */
+  var isBlackAndMedium = (
+    selectedColor &&
+    selectedColor.toLowerCase() === 'black' &&
+    selectedSize &&
+    selectedSize.toUpperCase() === 'M'
+  );
 
-      /*
-       * ── SPECIAL RULE ──────────────────────────────────
-       * If the variant being added has Color = Black AND
-       * Size = M (Medium), also auto-add the "Soft Winter
-       * Jacket" (handle: dark-winter-jacket) to the cart.
-       * ──────────────────────────────────────────────────
-       */
-      if (
-        selectedColor &&
-        selectedColor.toLowerCase() === 'black' &&
-        selectedSize &&
-        selectedSize.toUpperCase() === 'M'
-      ) {
-        return autoAddSoftWinterJacket();
-      }
-    })
-    .then(function () {
-      atcBtn.disabled = false;
-    })
-    .catch(function (err) {
-      console.error('[Gift Guide] Add-to-cart error:', err);
-      setStatus('Could not add to cart. Try again.', 'error');
-      atcBtn.disabled = false;
-    });
+  if (isBlackAndMedium) {
+    fetch('/products/' + SOFT_WINTER_JACKET_HANDLE + '.json')
+      .then(function (res) {
+        if (!res.ok) throw new Error('Jacket not found');
+        return res.json();
+      })
+      .then(function (data) {
+        var product = data.product;
+        var jacketVariant = product.variants.find(function (v) {
+          return v.available !== false;
+        }) || product.variants[0];
+
+        var itemsToAdd = [
+          { id: variant.id, quantity: 1 },
+          { id: jacketVariant.id, quantity: 1 }
+        ];
+        
+        return addToCart(itemsToAdd);
+      })
+      .then(onAddToCartSuccess)
+      .catch(onAddToCartError);
+  } else {
+    var itemsToAdd = [{ id: variant.id, quantity: 1 }];
+    addToCart(itemsToAdd)
+      .then(onAddToCartSuccess)
+      .catch(onAddToCartError);
+  }
+}
+
+function onAddToCartSuccess() {
+  setStatus('Added to cart!', 'success');
+  // Do NOT close popup. Give clear visual feedback.
+  atcBtn.innerHTML = 'Added! <svg class="gg-popup__atc-arrow" width="34" height="2" viewBox="0 0 34 2" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1H34" stroke="white" stroke-width="1.5"/><path d="M28 0L34 1L28 2" fill="white"/></svg>';
+  setTimeout(function() {
+    atcBtn.disabled = false;
+    atcBtn.innerHTML = 'Add to cart <svg class="gg-popup__atc-arrow" width="34" height="2" viewBox="0 0 34 2" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 1H34" stroke="white" stroke-width="1.5"/><path d="M28 0L34 1L28 2" fill="white"/></svg>';
+  }, 3000);
+}
+
+function onAddToCartError(err) {
+  console.error('[Gift Guide] Add-to-cart error:', err);
+  setStatus('Could not add to cart. Try again.', 'error');
+  atcBtn.disabled = false;
 }
 
 /**
- * POSTs a single item to /cart/add.js via the Fetch API.
+ * POSTs multiple items to /cart/add.js via the Fetch API.
  * Dispatches Dawn's CartLinesUpdateEvent so the cart drawer automatically opens.
  *
- * @param {number} variantId — Shopify variant ID
- * @param {number} qty       — Quantity to add
+ * @param {Array} items — Array of {id, quantity} objects
  * @returns {Promise}
  */
-function addToCart(variantId, qty) {
+function addToCart(items) {
   var deferredEventPromise = CartLinesUpdateEvent.createPromise();
   
+  var lines = items.map(function(item) {
+    return { merchandiseId: item.id.toString(), quantity: item.quantity };
+  });
+
+  var totalQty = items.reduce(function(sum, item) {
+    return sum + item.quantity;
+  }, 0);
+
   // Dispatch the event that Dawn listens to.
   document.dispatchEvent(
     new CartLinesUpdateEvent({
       action: 'add',
       context: 'product',
-      lines: [{ merchandiseId: variantId.toString(), quantity: qty }],
+      lines: lines,
       promise: deferredEventPromise.promise,
     })
   );
@@ -398,8 +433,7 @@ function addToCart(variantId, qty) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
     body: JSON.stringify({
-      id: variantId,
-      quantity: qty,
+      items: items,
       sections: cartItemComponentsSectionIds.join(',')
     })
   })
@@ -420,43 +454,13 @@ function addToCart(variantId, qty) {
             detail: {
               items: cartJson.items || [],
               source: 'gift-guide-popup',
-              itemCount: qty,
+              itemCount: totalQty,
               sections: addResponse.sections || {},
               didError: false
             }
           });
           return addResponse;
         });
-    });
-}
-
-/**
- * Fetches the "Soft Winter Jacket" product and adds the first
- * available variant to the cart automatically.
- *
- * @returns {Promise}
- */
-function autoAddSoftWinterJacket() {
-  return fetch('/products/' + SOFT_WINTER_JACKET_HANDLE + '.json')
-    .then(function (res) {
-      if (!res.ok) throw new Error('Soft Winter Jacket not found');
-      return res.json();
-    })
-    .then(function (data) {
-      var product  = data.product;
-      /* Pick the first variant that is available */
-      var variant = product.variants.find(function (v) {
-        return v.available !== false;
-      }) || product.variants[0];
-
-      return addToCart(variant.id, 1);
-    })
-    .then(function () {
-      console.log('[Gift Guide] Auto-added Soft Winter Jacket bonus!');
-    })
-    .catch(function (err) {
-      console.error('[Gift Guide] Auto-add Soft Winter Jacket failed:', err);
-      /* Non-blocking — the primary add still succeeded */
     });
 }
 
