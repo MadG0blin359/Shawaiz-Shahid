@@ -599,6 +599,10 @@
   }
 
   /* ── Bar ──────────────────────────────────────────────── */
+  .gg-bar--top {
+    display: none;
+  }
+
   .gg-bar {
     padding: 10px 16px;
     gap: 16px;
@@ -609,11 +613,6 @@
   .gg-bar__text {
     font-size: 14px;
     text-align: center;
-  }
-
-  .gg-bar__logo,
-  .gg-bar .gg-btn-choose {
-    display: none;
   }
 
   /* ── Mobile Header ───────────────────────────────────── */
