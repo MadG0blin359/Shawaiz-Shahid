@@ -386,13 +386,21 @@ function addToCart(variantId, qty) {
     })
   );
 
+  const cartItemsComponents = document.querySelectorAll('cart-items-component');
+  let cartItemComponentsSectionIds = [];
+  cartItemsComponents.forEach(function (item) {
+    if (item.dataset.sectionId) {
+      cartItemComponentsSectionIds.push(item.dataset.sectionId);
+    }
+  });
+
   return fetch('/cart/add.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
     body: JSON.stringify({
       id: variantId,
       quantity: qty,
-      sections: 'cart-drawer,cart-icon-bubble'
+      sections: cartItemComponentsSectionIds.join(',')
     })
   })
     .then(function (res) {
