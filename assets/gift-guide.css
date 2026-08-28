@@ -1,0 +1,710 @@
+/*
+ * ============================================================
+ * Gift Guide — Shared Styles
+ * ============================================================
+ * Styles for both the gift-guide-banner and gift-guide-grid
+ * custom Shopify sections. Uses Jost + Lustria from Google Fonts.
+ *
+ * Colour palette (from Figma):
+ *   --gg-black:     #000000
+ *   --gg-white:     #FFFFFF
+ *   --gg-grey-bg:   #F5F5F5
+ *   --gg-grey-text: #333333
+ *   --gg-grey-var:  #AFAFB7
+ *   --gg-yellow:    #FFF544
+ *   --gg-light-bg:  #F7F7F7
+ * ============================================================
+ */
+
+/* ── CSS Custom Properties ───────────────────────────────── */
+:root {
+  --gg-black:     #000000;
+  --gg-white:     #FFFFFF;
+  --gg-grey-bg:   #F5F5F5;
+  --gg-grey-text: #333333;
+  --gg-grey-var:  #AFAFB7;
+  --gg-yellow:    #FFF544;
+  --gg-light-bg:  #F7F7F7;
+  --gg-font-body: 'Jost', sans-serif;
+  --gg-font-heading: 'Lustria', serif;
+}
+
+/* ── Reset for section scope ─────────────────────────────── */
+.gg-section *,
+.gg-section *::before,
+.gg-section *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.gg-section {
+  font-family: var(--gg-font-body);
+  color: var(--gg-black);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+ * SECTION 1 — BANNER
+ * ============================================================ */
+
+/* ── Announcement / Utility Bars ─────────────────────────── */
+.gg-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 50px;
+  background: var(--gg-grey-bg);
+  gap: 360px;
+  width: 100%;
+}
+
+.gg-bar--bottom {
+  gap: 0;
+}
+
+.gg-bar__logo {
+  height: 19px;
+  width: auto;
+  flex-shrink: 0;
+}
+
+.gg-bar__text {
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 13.42px;
+  text-align: center;
+  color: var(--gg-black);
+  white-space: nowrap;
+}
+
+/* ── Yellow CTA "Choose Gift" button ─────────────────────── */
+.gg-btn-choose {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 11px 24px;
+  background: var(--gg-yellow);
+  color: var(--gg-black);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20.48px;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  transition: opacity 0.2s ease;
+}
+
+.gg-btn-choose:hover {
+  opacity: 0.85;
+}
+
+.gg-btn-choose__arrow {
+  width: 24px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.gg-btn-choose:hover .gg-btn-choose__arrow {
+  transform: translateX(4px);
+}
+
+/* ── Hero Area ───────────────────────────────────────────── */
+.gg-hero {
+  position: relative;
+  width: 100%;
+  height: 780px;
+  background: var(--gg-white);
+  overflow: hidden;
+}
+
+.gg-hero__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.gg-hero__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 67px 105px;
+  height: 100%;
+  max-width: 600px;
+}
+
+.gg-hero__heading {
+  font-family: var(--gg-font-body);
+  font-weight: 500;
+  font-size: 70px;
+  line-height: 1em;
+  color: var(--gg-black);
+  margin-bottom: 50px;
+}
+
+.gg-hero__description {
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.4em;
+  color: var(--gg-black);
+  margin-bottom: 50px;
+  max-width: 483px;
+}
+
+/* ── "Shop Now" CTA Button ───────────────────────────────── */
+.gg-btn-shop {
+  display: inline-flex;
+  align-items: center;
+  gap: 24px;
+  padding: 13px 30px;
+  background: var(--gg-black);
+  color: var(--gg-white);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20.48px;
+  text-transform: uppercase;
+  width: fit-content;
+  transition: background-color 0.3s ease;
+}
+
+.gg-btn-shop:hover {
+  background-color: #222;
+}
+
+.gg-btn-shop__arrow {
+  width: 25px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.gg-btn-shop:hover .gg-btn-shop__arrow {
+  transform: translateX(6px);
+}
+
+/* ============================================================
+ * SECTION 2 — PRODUCT GRID
+ * ============================================================ */
+
+.gg-grid-section {
+  padding: 0 50px 90px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.gg-grid__title {
+  font-family: var(--gg-font-heading);
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 1.2em;
+  color: var(--gg-black);
+  margin-bottom: 30px;
+}
+
+/* ── Image Grid ──────────────────────────────────────────── */
+.gg-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.gg-grid__item {
+  position: relative;
+  width: 433px;
+  height: 444px;
+  overflow: hidden;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.gg-grid__item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.gg-grid__item:hover .gg-grid__item-img {
+  transform: scale(1.03);
+}
+
+/* ── "+" Icon Overlay ────────────────────────────────────── */
+.gg-grid__item-icon {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  z-index: 2;
+  filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.2));
+  transition: transform 0.2s ease;
+}
+
+.gg-grid__item-icon:hover {
+  transform: scale(1.15);
+}
+
+/* ============================================================
+ * PRODUCT POPUP / MODAL
+ * ============================================================ */
+
+/* ── Overlay ─────────────────────────────────────────────── */
+.gg-popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  animation: gg-fadeIn 0.25s ease;
+}
+
+.gg-popup-overlay.is-active {
+  display: block;
+}
+
+/* ── Popup Card ──────────────────────────────────────────── */
+.gg-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 311px;
+  background: var(--gg-white);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 20px;
+  animation: gg-slideUp 0.3s ease;
+}
+
+.gg-popup.is-active {
+  display: block;
+}
+
+/* ── Close Button ────────────────────────────────────────── */
+.gg-popup__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 17px;
+  height: 17px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.gg-popup__close:hover {
+  opacity: 1;
+}
+
+.gg-popup__close svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Product Info Layout ─────────────────────────────────── */
+.gg-popup__body {
+  display: flex;
+  gap: 8px;
+}
+
+.gg-popup__image {
+  width: 120px;
+  height: 140px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.gg-popup__details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 16px;
+}
+
+.gg-popup__name {
+  font-family: var(--gg-font-body);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.2em;
+  color: var(--gg-black);
+}
+
+.gg-popup__price {
+  font-family: var(--gg-font-heading);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.2em;
+  color: var(--gg-black);
+}
+
+.gg-popup__desc {
+  font-family: var(--gg-font-body);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.1em;
+  letter-spacing: -0.01em;
+  color: var(--gg-black);
+  margin-top: 4px;
+}
+
+/* ── Color Variant Selector ──────────────────────────────── */
+.gg-popup__variant-group {
+  margin-top: 16px;
+}
+
+.gg-popup__variant-label {
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.3em;
+  color: var(--gg-grey-text);
+  margin-bottom: 6px;
+}
+
+.gg-popup__colors {
+  display: flex;
+  border: 0.5px solid var(--gg-black);
+  overflow: hidden;
+}
+
+.gg-popup__color-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  background: var(--gg-white);
+  border: none;
+  cursor: pointer;
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1em;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+  color: var(--gg-black);
+  transition: background 0.2s ease, color 0.2s ease;
+  position: relative;
+}
+
+/* Vertical divider between colour buttons */
+.gg-popup__color-btn + .gg-popup__color-btn {
+  border-left: 0.5px solid var(--gg-black);
+}
+
+.gg-popup__color-btn.is-selected {
+  background: var(--gg-black);
+  color: var(--gg-white);
+}
+
+/* Small colour swatch rectangle */
+.gg-popup__color-swatch {
+  width: 5px;
+  height: 40px;
+  display: inline-block;
+  flex-shrink: 0;
+  border: 0.5px solid var(--gg-black);
+}
+
+/* ── Size Variant Selector ───────────────────────────────── */
+.gg-popup__size-wrap {
+  margin-top: 12px;
+}
+
+.gg-popup__size-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 13px;
+  border: 0.5px solid var(--gg-black);
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1em;
+  letter-spacing: -0.02em;
+  color: var(--gg-black);
+  width: 100%;
+  position: relative;
+}
+
+.gg-popup__size-trigger::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--gg-black);
+  transition: transform 0.2s ease;
+}
+
+.gg-popup__size-trigger.is-open::after {
+  transform: rotate(180deg);
+}
+
+/* Size divider line inside the trigger */
+.gg-popup__size-trigger-divider {
+  position: absolute;
+  right: 55px;
+  top: 0;
+  bottom: 0;
+  width: 0.5px;
+  background: var(--gg-black);
+}
+
+.gg-popup__size-options {
+  display: none;
+  border: 1px solid var(--gg-black);
+  border-top: none;
+  max-height: 145px;
+  overflow-y: auto;
+  background: var(--gg-white);
+}
+
+.gg-popup__size-options.is-open {
+  display: block;
+}
+
+.gg-popup__size-option {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  background: var(--gg-white);
+  border: none;
+  cursor: pointer;
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1em;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--gg-black);
+  transition: background 0.15s ease;
+}
+
+.gg-popup__size-option:hover {
+  background: var(--gg-grey-bg);
+}
+
+.gg-popup__size-option.is-selected {
+  background: var(--gg-black);
+  color: var(--gg-white);
+}
+
+/* ── Add to Cart Button ──────────────────────────────────── */
+.gg-popup__atc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 20px;
+  background: var(--gg-black);
+  color: var(--gg-white);
+  border: none;
+  cursor: pointer;
+  font-family: var(--gg-font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 21px;
+  text-transform: uppercase;
+  transition: background 0.3s ease;
+}
+
+.gg-popup__atc:hover {
+  background: #222;
+}
+
+.gg-popup__atc:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.gg-popup__atc-arrow {
+  width: 34px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.gg-popup__atc:hover:not(:disabled) .gg-popup__atc-arrow {
+  transform: translateX(6px);
+}
+
+/* ── Status Message ──────────────────────────────────────── */
+.gg-popup__status {
+  font-family: var(--gg-font-body);
+  font-size: 12px;
+  text-align: center;
+  margin-top: 8px;
+  min-height: 16px;
+  transition: opacity 0.3s ease;
+}
+
+.gg-popup__status--success { color: #2e7d32; }
+.gg-popup__status--error   { color: #c62828; }
+
+/* ── Animations ──────────────────────────────────────────── */
+@keyframes gg-fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes gg-slideUp {
+  from { opacity: 0; transform: translate(-50%, -46%); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* ============================================================
+ * RESPONSIVE — MOBILE (≤ 768px)
+ * ============================================================ */
+@media (max-width: 768px) {
+
+  /* ── Bar ──────────────────────────────────────────────── */
+  .gg-bar {
+    padding: 10px 16px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .gg-bar__text {
+    font-size: 14px;
+  }
+
+  .gg-bar .gg-btn-choose {
+    display: none;
+  }
+
+  /* ── Mobile Header ───────────────────────────────────── */
+  .gg-mobile-header {
+    display: flex;
+    align-items: center;
+    gap: 78px;
+    padding: 23px 16px 23px 16px;
+    background: var(--gg-light-bg);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  .gg-mobile-header__hamburger {
+    width: 18px;
+    height: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .gg-mobile-header__logo {
+    height: 19px;
+    width: auto;
+  }
+
+  /* ── Hero ─────────────────────────────────────────────── */
+  .gg-hero {
+    height: 421px;
+  }
+
+  .gg-hero__bg {
+    object-fit: contain;
+    top: 157px;
+    height: auto;
+    opacity: 0.8;
+  }
+
+  .gg-hero__content {
+    padding: 49px 16px 20px;
+    align-items: center;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+
+  .gg-hero__heading {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .gg-hero__description {
+    font-size: 16px;
+    line-height: 1.3em;
+    text-align: center;
+    margin-bottom: 0;
+    max-width: 340px;
+  }
+
+  .gg-hero__cta-mobile {
+    margin-top: auto;
+    margin-bottom: 64px;
+  }
+
+  /* ── Grid Section ────────────────────────────────────── */
+  .gg-grid-section {
+    padding: 0 16px 40px;
+  }
+
+  .gg-grid__title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .gg-grid {
+    gap: 4px;
+    justify-content: center;
+  }
+
+  .gg-grid__item {
+    width: calc(50% - 2px);
+    height: auto;
+    aspect-ratio: 169 / 186;
+  }
+
+  .gg-grid__item-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ── Popup on mobile ─────────────────────────────────── */
+  .gg-popup {
+    width: calc(100% - 32px);
+    max-width: 311px;
+  }
+}
+
+/* ── Desktop-only helpers ────────────────────────────────── */
+@media (min-width: 769px) {
+  .gg-mobile-header {
+    display: none;
+  }
+
+  .gg-hero__cta-mobile {
+    display: none;
+  }
+}

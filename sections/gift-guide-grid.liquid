@@ -1,0 +1,218 @@
+{% comment %}
+  ============================================================
+  Section: Gift Guide Product Grid
+  ============================================================
+  Custom Shopify section built from scratch (not reusing any
+  existing Dawn / Horizon sections).
+
+  Layout:
+    • Section heading — "Tisso vison in the wild" (editable)
+    • 3×2 image grid (desktop) / 2-col grid (mobile)
+    • Each block links to a Shopify product via the product picker
+    • Clicking a block opens a popup with:
+      – Product image, name, price, description
+      – Colour variant tabs
+      – Size variant dropdown
+      – "Add to Cart" button (Shopify Cart API)
+    • Special rule: Black + Medium → auto-add Soft Winter Jacket
+
+  Product data is fetched live via /products/{handle}.json,
+  so nothing is hardcoded — works with any product catalogue.
+  ============================================================
+{% endcomment %}
+
+<section class="gg-section gg-grid-section" aria-label="{{ section.settings.title }}">
+
+  {%- comment -%} ── Section Heading ── {%- endcomment -%}
+  <h2 class="gg-grid__title">{{ section.settings.title }}</h2>
+
+  {%- comment -%} ── Product Image Grid ── {%- endcomment -%}
+  <div class="gg-grid">
+    {%- for block in section.blocks -%}
+      {%- comment -%}
+        Each block represents one product tile. We store the
+        product handle on the element for JS to use when
+        opening the popup.
+      {%- endcomment -%}
+      <div
+        class="gg-grid__item"
+        data-product-handle="{{ block.settings.product.handle }}"
+        {{ block.shopify_attributes }}
+      >
+        {%- comment -%} Grid Image — uses product featured image {%- endcomment -%}
+        {%- if block.settings.product != blank and block.settings.product.featured_image != blank -%}
+          <img
+            class="gg-grid__item-img"
+            src="{{ block.settings.product.featured_image | image_url: width: 866 }}"
+            alt="{{ block.settings.product.title | escape }}"
+            width="433"
+            height="444"
+            loading="lazy"
+          >
+        {%- else -%}
+          {%- comment -%} Fallback: use Shopify's default product placeholder {%- endcomment -%}
+          {{ 'product-1' | placeholder_svg_tag: 'gg-grid__item-img' }}
+        {%- endif -%}
+
+        {%- comment -%} "+" icon overlay — positioned per Figma specs {%- endcomment -%}
+        <img
+          class="gg-grid__item-icon"
+          src="{{ 'gift-guide-plus-icon.svg' | asset_url }}"
+          alt="View product details"
+          width="22"
+          height="22"
+          style="
+            {%- comment -%} Position varies per block — use defaults matching Figma {%- endcomment -%}
+            top: {{ block.settings.icon_top | default: '50' }}%;
+            left: {{ block.settings.icon_left | default: '60' }}%;
+          "
+        >
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%}
+    ============================================================
+    PRODUCT POPUP MODAL
+    ============================================================
+    A single popup instance, shared by all grid items.
+    Content is populated dynamically by gift-guide.js when the
+    user clicks a product tile.
+    ============================================================
+  {%- endcomment -%}
+
+  {%- comment -%} Overlay backdrop {%- endcomment -%}
+  <div id="gg-popup-overlay" class="gg-popup-overlay" aria-hidden="true"></div>
+
+  {%- comment -%} Popup card {%- endcomment -%}
+  <div id="gg-popup" class="gg-popup" role="dialog" aria-modal="true" aria-label="Product details">
+
+    {%- comment -%} Close button {%- endcomment -%}
+    <button id="gg-popup-close" class="gg-popup__close" aria-label="Close popup">
+      <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1L13 13M13 1L1 13" stroke="#000" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    {%- comment -%} Product info — image + text {%- endcomment -%}
+    <div class="gg-popup__body">
+      <img id="gg-popup-image" class="gg-popup__image" src="" alt="Product image" width="120" height="140">
+      <div class="gg-popup__details">
+        <span id="gg-popup-name" class="gg-popup__name"></span>
+        <span id="gg-popup-price" class="gg-popup__price"></span>
+        <p id="gg-popup-desc" class="gg-popup__desc"></p>
+      </div>
+    </div>
+
+    {%- comment -%} ── Colour Variant Selector ── {%- endcomment -%}
+    <div class="gg-popup__variant-group">
+      <span class="gg-popup__variant-label">Color</span>
+      <div id="gg-popup-colors" class="gg-popup__colors">
+        {%- comment -%} Buttons are rendered by gift-guide.js {%- endcomment -%}
+      </div>
+    </div>
+
+    {%- comment -%} ── Size Variant Selector ── {%- endcomment -%}
+    <div class="gg-popup__variant-group gg-popup__size-wrap">
+      <span class="gg-popup__variant-label">Size</span>
+      <button
+        id="gg-popup-size-trigger"
+        type="button"
+        class="gg-popup__size-trigger"
+      >
+        <span class="gg-popup__size-trigger-text">Choose your size</span>
+        <span class="gg-popup__size-trigger-divider"></span>
+      </button>
+      <div id="gg-popup-size-options" class="gg-popup__size-options">
+        {%- comment -%} Options are rendered by gift-guide.js {%- endcomment -%}
+      </div>
+    </div>
+
+    {%- comment -%} ── Add to Cart Button ── {%- endcomment -%}
+    <button id="gg-popup-atc" type="button" class="gg-popup__atc">
+      Add to cart
+      <svg class="gg-popup__atc-arrow" width="34" height="2" viewBox="0 0 34 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 1H34" stroke="white" stroke-width="1.5"/>
+        <path d="M28 0L34 1L28 2" fill="white"/>
+      </svg>
+    </button>
+
+    {%- comment -%} Status message (success / error feedback) {%- endcomment -%}
+    <div id="gg-popup-status" class="gg-popup__status"></div>
+  </div>
+
+</section>
+
+{%- comment -%} ── Load the interactive JS ── {%- endcomment -%}
+<script src="{{ 'gift-guide.js' | asset_url }}" defer></script>
+
+{% comment %}
+  ============================================================
+  Schema — Customiser settings for the Grid section
+  ============================================================
+  Provides 6 repeatable blocks, each with a product picker and
+  optional custom image + icon positioning.
+{% endcomment %}
+{% schema %}
+{
+  "name": "Gift Guide Grid",
+  "tag": "div",
+  "class": "gift-guide-grid-wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Tisso vison in the wild"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product_tile",
+      "name": "Product Tile",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+
+        {
+          "type": "range",
+          "id": "icon_top",
+          "label": "Icon Position — Top (%)",
+          "min": 0,
+          "max": 95,
+          "step": 1,
+          "default": 50,
+          "unit": "%"
+        },
+        {
+          "type": "range",
+          "id": "icon_left",
+          "label": "Icon Position — Left (%)",
+          "min": 0,
+          "max": 95,
+          "step": 1,
+          "default": 60,
+          "unit": "%"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Gift Guide Grid",
+      "blocks": [
+        { "type": "product_tile" },
+        { "type": "product_tile" },
+        { "type": "product_tile" },
+        { "type": "product_tile" },
+        { "type": "product_tile" },
+        { "type": "product_tile" }
+      ]
+    }
+  ]
+}
+{% endschema %}

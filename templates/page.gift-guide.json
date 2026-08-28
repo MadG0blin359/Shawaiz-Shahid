@@ -1,0 +1,87 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */{
+  "sections": {
+    "gift_guide_banner": {
+      "type": "gift-guide-banner",
+      "settings": {
+        "brand_name": "TISSO VISON",
+        "subtitle": "Find the ideal gift for your loved ones.",
+        "cta_choose_text": "CHOOSE GIFT",
+        "heading": "The Gift Guide",
+        "description": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.",
+        "cta_text": "SHOP NOW",
+        "cta_link": "shopify:\/\/collections\/all",
+        "bottom_text": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+      }
+    },
+    "gift_guide_grid": {
+      "type": "gift-guide-grid",
+      "settings": {
+        "title": "Tisso vison in the wild"
+      },
+      "blocks": {
+        "product_1": {
+          "type": "product_tile",
+          "settings": {
+            "icon_top": 54,
+            "icon_left": 59
+          }
+        },
+        "product_2": {
+          "type": "product_tile",
+          "settings": {
+            "icon_top": 50,
+            "icon_left": 82
+          }
+        },
+        "product_3": {
+          "type": "product_tile",
+          "settings": {
+            "icon_top": 18,
+            "icon_left": 60
+          }
+        },
+        "product_4": {
+          "type": "product_tile",
+          "settings": {
+            "icon_top": 16,
+            "icon_left": 70
+          }
+        },
+        "product_5": {
+          "type": "product_tile",
+          "settings": {
+            "icon_top": 23,
+            "icon_left": 49
+          }
+        },
+        "product_6": {
+          "type": "product_tile",
+          "settings": {
+            "icon_top": 37,
+            "icon_left": 74
+          }
+        }
+      },
+      "block_order": [
+        "product_1",
+        "product_2",
+        "product_3",
+        "product_4",
+        "product_5",
+        "product_6"
+      ]
+    }
+  },
+  "order": [
+    "gift_guide_banner",
+    "gift_guide_grid"
+  ]
+}
