@@ -374,7 +374,7 @@ function handleAddToCart() {
  * @returns {Promise}
  */
 function addToCart(variantId, qty) {
-  const deferredEventPromise = CartLinesUpdateEvent.createPromise();
+  var deferredEventPromise = CartLinesUpdateEvent.createPromise();
   
   // Dispatch the event that Dawn listens to.
   document.dispatchEvent(
@@ -386,8 +386,8 @@ function addToCart(variantId, qty) {
     })
   );
 
-  const cartItemsComponents = document.querySelectorAll('cart-items-component');
-  let cartItemComponentsSectionIds = [];
+  var cartItemsComponents = document.querySelectorAll('cart-items-component');
+  var cartItemComponentsSectionIds = [];
   cartItemsComponents.forEach(function (item) {
     if (item.dataset.sectionId) {
       cartItemComponentsSectionIds.push(item.dataset.sectionId);
@@ -407,19 +407,26 @@ function addToCart(variantId, qty) {
       if (!res.ok) throw new Error('Cart API error');
       return res.json();
     })
-    .then(function (ajaxCart) {
-      // Resolve the event so the cart drawer updates with the new sections
-      deferredEventPromise.resolve({
-        cart: CartLinesUpdateEvent.createCartFromAjaxResponse ? CartLinesUpdateEvent.createCartFromAjaxResponse(ajaxCart) : ajaxCart,
-        detail: {
-          items: ajaxCart.items || [],
-          source: 'gift-guide-popup',
-          itemCount: qty,
-          sections: ajaxCart.sections || {},
-          didError: false
-        }
-      });
-      return ajaxCart;
+    .then(function (addResponse) {
+      // Fetch full cart because createCartFromAjaxResponse expects a full cart object, not a cart item.
+      return fetch('/cart.js')
+        .then(function (cartRes) {
+          return cartRes.json();
+        })
+        .then(function (cartJson) {
+          // Resolve the event so the cart drawer updates with the new sections
+          deferredEventPromise.resolve({
+            cart: CartLinesUpdateEvent.createCartFromAjaxResponse ? CartLinesUpdateEvent.createCartFromAjaxResponse(cartJson) : cartJson,
+            detail: {
+              items: cartJson.items || [],
+              source: 'gift-guide-popup',
+              itemCount: qty,
+              sections: addResponse.sections || {},
+              didError: false
+            }
+          });
+          return addResponse;
+        });
     });
 }
 
