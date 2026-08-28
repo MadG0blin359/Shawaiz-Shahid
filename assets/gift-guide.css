@@ -61,6 +61,7 @@
 
 .gg-bar--bottom {
   gap: 0;
+  justify-content: center;
 }
 
 .gg-bar__logo {

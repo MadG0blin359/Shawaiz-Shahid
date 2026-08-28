@@ -156,7 +156,8 @@
 
   {%- comment -%} ── BOTTOM ANNOUNCEMENT BAR ── {%- endcomment -%}
   <div class="gg-bar gg-bar--bottom">
-    <span class="gg-bar__text">{{ section.settings.bottom_text }}</span>
+    <span class="gg-bar__text gg-hide-mobile">{{ section.settings.bottom_text }}</span>
+    <span class="gg-bar__text gg-hide-desktop">{{ section.settings.bottom_text_mobile | default: section.settings.bottom_text }}</span>
   </div>
 
 </section>
@@ -235,6 +236,12 @@
       "id": "bottom_text",
       "label": "Bottom Bar Text",
       "default": "SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL"
+    },
+    {
+      "type": "text",
+      "id": "bottom_text_mobile",
+      "label": "Bottom Bar Text (Mobile)",
+      "default": "SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR"
     }
   ],
   "presets": [
