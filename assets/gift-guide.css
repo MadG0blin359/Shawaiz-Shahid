@@ -99,11 +99,30 @@
   line-height: 20.48px;
   text-transform: uppercase;
   letter-spacing: 0;
-  transition: opacity 0.2s ease;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.4s ease;
+}
+
+.gg-btn-choose::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gg-black);
+  z-index: -1;
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gg-btn-choose:hover {
-  opacity: 0.85;
+  color: var(--gg-yellow);
+}
+
+.gg-btn-choose:hover::before {
+  transform: translateX(0);
 }
 
 .gg-btn-choose__arrow {
@@ -169,6 +188,7 @@
 
 /* ── "Shop Now" CTA Button ───────────────────────────────── */
 .gg-btn-shop {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 24px;
@@ -184,11 +204,30 @@
   line-height: 20.48px;
   text-transform: uppercase;
   width: fit-content;
-  transition: background-color 0.3s ease;
+  overflow: hidden;
+  z-index: 1;
+  transition: color 0.4s ease;
+}
+
+.gg-btn-shop::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gg-yellow);
+  z-index: -1;
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gg-btn-shop:hover {
-  background-color: #222;
+  color: var(--gg-black);
+}
+
+.gg-btn-shop:hover::before {
+  transform: translateX(0);
 }
 
 .gg-btn-shop__arrow {
