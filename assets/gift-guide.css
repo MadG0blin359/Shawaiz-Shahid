@@ -118,7 +118,7 @@
 }
 
 .gg-btn-choose:hover {
-  color: var(--gg-yellow);
+  color: var(--gg-white);
 }
 
 .gg-btn-choose:hover::before {
