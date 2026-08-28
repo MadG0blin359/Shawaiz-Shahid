@@ -582,10 +582,21 @@
   to   { opacity: 1; transform: translate(-50%, -50%); }
 }
 
+/* ── Visibility utilities ────────────────────────────── */
+.gg-hide-desktop {
+  display: none !important;
+}
+
 /* ============================================================
  * RESPONSIVE — MOBILE (≤ 749px)
  * ============================================================ */
 @media (max-width: 749px) {
+  .gg-hide-desktop {
+    display: block !important;
+  }
+  .gg-hide-mobile {
+    display: none !important;
+  }
 
   /* ── Bar ──────────────────────────────────────────────── */
   .gg-bar {

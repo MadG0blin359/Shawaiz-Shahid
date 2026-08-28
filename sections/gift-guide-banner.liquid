@@ -103,7 +103,8 @@
     {%- comment -%} Hero Content {%- endcomment -%}
     <div class="gg-hero__content">
       <h1 class="gg-hero__heading">{{ section.settings.heading }}</h1>
-      <p class="gg-hero__description">{{ section.settings.description }}</p>
+      <p class="gg-hero__description gg-hide-mobile">{{ section.settings.description }}</p>
+      <p class="gg-hero__description gg-hide-desktop">{{ section.settings.description_mobile | default: section.settings.description }}</p>
 
       {%- comment -%} Desktop CTA {%- endcomment -%}
       <a
@@ -191,6 +192,12 @@
       "id": "description",
       "label": "Hero Description",
       "default": "Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season."
+    },
+    {
+      "type": "textarea",
+      "id": "description_mobile",
+      "label": "Hero Description (Mobile)",
+      "default": "Discover Joy: Your Ultimate Holiday Gift Destination."
     },
     {
       "type": "text",
